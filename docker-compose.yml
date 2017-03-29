@@ -2,6 +2,6 @@ version: '3'
 
 services:
   server:
-    image: immanuelpotter/example-webserver
+    image: immanuelpotter/example-webserver:production
     ports: 
       - "8080:8080"

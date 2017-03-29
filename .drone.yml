@@ -4,13 +4,13 @@ pipeline:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker build -t immanuelpotter/example-webserver .
+      - docker build -t immanuelpotter/example-webserver:$DRONE_COMMIT_SHA .
   test:
     image: docker
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker run immanuelpotter/example-webserver /test.sh
+      - docker run immanuelpotter/example-webserver:$DRONE_COMMIT_SHA /test.sh
   push:
     image: docker
     environment:
@@ -19,11 +19,12 @@ pipeline:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
       - docker login -u immanuelpotter -p $PASS
-      - docker push immanuelpotter/example-webserver
+      - docker push immanuelpotter/example-webserver:$DRONE_COMMIT_SHA
   deploy:
     image: docker
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker pull immanuelpotter/example-webserver
+      - docker pull immanuelpotter/example-webserver:$DRONE_COMMIT_SHA
+      - docker tag immanuelpotter/example-webserver:$DRONE_COMMIT_SHA immanuelpotter/example-webserver:latest
       - docker stack deploy -c ./docker-compose.yml example-webserver
