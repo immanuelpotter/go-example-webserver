@@ -30,5 +30,5 @@ pipeline:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
       - docker pull immanuelpotter/example-webserver:$DRONE_COMMIT_SHA
-      - docker tag immanuelpotter/example-webserver:$DRONE_COMMIT_SHA immanuelpotter/example-webserver:latest
+      - docker tag immanuelpotter/example-webserver:$DRONE_COMMIT_SHA immanuelpotter/example-webserver:production
       - docker stack deploy -c ./docker-compose.yml example-webserver
