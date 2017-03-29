@@ -11,3 +11,12 @@ pipeline:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
       - docker run immanuelpotter/example-webserver /test.sh
+  push:
+    image: docker
+    environment:
+      - PASS=${HUB_PASS}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - docker login -u immanuelpotter -p $PASS
+      - docker push immanuelpotter/example-webserver
