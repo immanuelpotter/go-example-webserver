@@ -20,3 +20,10 @@ pipeline:
     commands:
       - docker login -u immanuelpotter -p $PASS
       - docker push immanuelpotter/example-webserver
+  deploy:
+    image: docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - docker pull immanuelpotter/example-webserver
+      - docker stack deploy -c ./docker-compose.yml example-webserver
